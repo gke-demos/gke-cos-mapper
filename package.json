@@ -1,0 +1,14 @@
+{
+  "name": "gke-cos-mapper-server",
+  "version": "1.0.0",
+  "description": "Simple server to host the GKE-COS-Mapper static HTML file on Cloud Run.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node app/index.js"
+  },
+  "author": "Gemini",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}

@@ -1,0 +1,7 @@
+# Exclude files not needed in the final container to speed up builds
+Dockerfile
+.dockerignore
+node_modules
+npm-debug.log
+.git
+.gitignore

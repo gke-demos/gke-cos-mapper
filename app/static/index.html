@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GKE to COS Version Mapper</title>
+    <!-- Load Tailwind CSS from CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        /* Use the Inter font family */
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 min-h-screen flex items-center justify-center p-4">
+
+    <!-- Main Application Card -->
+    <main class="w-full max-w-4xl bg-white p-6 sm:p-8 rounded-lg shadow-md border border-gray-200">
+
+        <!-- Header: Logo and Title -->
+        <div class="flex flex-col items-center mb-6">
+             <!-- Inlined GKE Logo SVG (Updated) -->
+             <svg id="standard_product_icon" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 512 512" class="w-16 h-16 mb-4" aria-hidden="true">
+                <!-- Generator: Adobe Illustrator 29.1.0, SVG Export Plug-In . SVG Version: 2.1.0 Build 142)  -->
+                <defs>
+                  <style>
+                    .st0 {
+                      fill: none;
+                    }
+
+                    .st1 {
+                      fill: #4285f4;
+                    }
+
+                    .st2 {
+                      fill: #34a853;
+                    }
+
+                    .st3 {
+                      fill: #fbbc04;
+                    }
+
+                    .st4 {
+                      fill: #ea4335;
+                    }
+                  </style>
+                </defs>
+                <g id="bounding_box">
+                  <rect class="st0" width="512" height="512"/>
+                </g>
+                <g id="art">
+                  <path class="st2" d="M256,459c-2.7,0-5.4-.7-7.8-2l-166.2-93.5c-5-2.8-8.2-8.2-8.2-14v-187c0-5.8,3.1-11.1,8.2-13.9L248.2,55c4.9-2.7,10.8-2.7,15.7,0l166.2,93.5c5,2.8,8.2,8.2,8.2,13.9v187c0,5.8-3.1,11.1-8.2,14l-166.2,93.5c-2.4,1.4-5.1,2-7.8,2h0ZM105.8,340.1l150.2,84.5,150.2-84.5v-168.3l-150.2-84.5-150.2,84.5v168.3ZM422.2,349.5h0Z"/>
+                  <path class="st4" d="M89.8,178.5c-5.6,0-11-2.9-14-8.2-4.3-7.7-1.6-17.5,6.1-21.8L248.2,55c7.7-4.3,17.5-1.6,21.8,6.1,4.3,7.7,1.6,17.5-6.1,21.8l-166.2,93.5c-2.5,1.4-5.2,2.1-7.8,2.1h0Z"/>
+                  <path class="st4" d="M422.2,178.5c-2.7,0-5.4-.7-7.8-2.1l-166.2-93.5c-7.7-4.3-10.4-14.1-6.1-21.8,4.3-7.7,14.1-10.4,21.8-6.1l166.2,93.5c7.7,4.3,10.4,14.1,6.1,21.8-2.9,5.2-8.4,8.2-14,8.2h0Z"/>
+                  <path class="st4" d="M256,178.5c-8.8,0-16-7.2-16-16v-93.5c0-8.8,7.2-16,16-16s16,7.2,16,16v93.5c0,8.8-7.2,16-16,16Z"/>
+                  <path class="st3" d="M81.7,363.3c-4.9-2.9-7.9-8.1-7.9-13.8v-187c0-6,3.3-11.2,8.2-13.9,2.3-1.3,23.8-13.4,23.8-13.4v187l59.3-33.3c7.7-4.3,17.5-1.6,21.8,6.1,4.3,7.7,1.6,17.5-6.1,21.8l-90.9,51.2s-5.6-3.1-8.1-4.5h0Z"/>
+                  <path class="st1" d="M422.2,367.9l-90.9-51.2c-7.7-4.3-10.4-14.1-6.1-21.8s14.1-10.4,21.8-6.1l59.3,33.3v-187s21.5,12.1,23.9,13.4c.8.5,1.6,1,2.3,1.6,3.6,2.9,5.8,7.4,5.8,12.4v187c0,5.7-3,10.9-7.9,13.8-2.5,1.5-8.1,4.5-8.1,4.5h0Z"/>
+                  <path class="st4" d="M339.1,225.2c-2.7,0-5.4-.7-7.8-2.1l-75.3-42.3-75.3,42.3c-7.7,4.3-17.5,1.6-21.8-6.1-4.3-7.7-1.6-17.5,6.1-21.8l83.1-46.8c4.9-2.7,10.8-2.7,15.7,0l83.1,46.8c7.7,4.3,10.4,14.1,6.1,21.8-2.9,5.2-8.4,8.2-14,8.2h0Z"/>
+                  <path class="st1" d="M256,365.5c-5.6,0-11-2.9-14-8.2-4.3-7.7-1.6-17.5,6.1-21.8l75-42.2v-84.1c0-8.8,7.2-16,16-16s16,7.2,16,16v93.5c0,5.8-3.1,11.1-8.2,14l-83.1,46.8c-2.5,1.4-5.2,2.1-7.8,2.1h0Z"/>
+                  <path class="st3" d="M256,365.5c-2.7,0-5.4-.7-7.8-2l-83.1-46.8c-5-2.8-8.2-8.2-8.2-14v-93.5c0-8.8,7.2-16,16-16s16,7.2,16,16v84.1l51.1,28.8v-66.1c0-8.8,7.2-16,16-16s16,7.2,16,16v102.9s-3,1.6-7.9,4.5c-2.5,1.5-5.3,2.2-8.1,2.2h0Z"/>
+                  <path class="st1" d="M256,272c-5.6,0-11-2.9-14-8.2-4.3-7.7-1.6-17.5,6.1-21.8l91-51.2,7.9,4.4c2.1,1.1,4.2,2.8,6.1,6.1,4.3,7.7,1.6,17.5-6.1,21.8l-83.1,46.8c-2.5,1.4-5.2,2.1-7.8,2.1h0Z"/>
+                  <path class="st4" d="M256,237.6l-75.3-42.3c-7.7-4.3-17.5-1.6-21.8,6.1-1.4,2.5-2.1,5.2-2.1,7.8v9.4l91.3,51.3c2.5,1.4,5.2,2.1,7.8,2.1h0v-34.4h0Z"/>
+                </g>
+              </svg>
+            <h1 class="text-2xl sm:text-3xl font-semibold text-gray-900">GKE to COS Version Mapper</h1>
+        </div>
+
+        <!-- Controls: Dropdown and Refresh Button -->
+        <div class="flex flex-col sm:flex-row gap-4 mb-6">
+            <div class="flex-grow">
+                <label for="versionSelect" class="block text-sm font-medium text-gray-700 mb-1">Select GKE Version</label>
+                <select id="versionSelect" class="w-full p-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                    <option value="">Loading versions...</option>
+                </select>
+            </div>
+            <div class="sm:self-end">
+                <button id="refreshButton" class="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white font-medium py-2.5 px-5 rounded-lg transition-colors duration-200 flex items-center justify-center space-x-2">
+                    <!-- Refresh Icon SVG -->
+                    <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" />
+                    </svg>
+                    <span>Refresh Data</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Status Message Area -->
+        <div id="statusMessage" class="hidden p-4 mb-4 text-sm text-center rounded-lg"></div>
+
+        <!-- Results Table Container -->
+        <div class="w-full overflow-x-auto rounded-lg border border-gray-200">
+            <table class="min-w-full divide-y divide-gray-200">
+                <thead class="bg-gray-100">
+                    <tr>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
+                            GKE Version
+                        </th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
+                            COS Version (View Release Notes)
+                        </th>
+                    </tr>
+                </thead>
+                <tbody id="resultsTableBody" class="bg-white divide-y divide-gray-200">
+                    <!-- Rows will be injected by JavaScript -->
+                    <tr>
+                        <td colspan="2" class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center">
+                            Select a GKE version to see results.
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </main>
+
+    <script>
+        // Data source URL using a CORS proxy to bypass browser security restrictions
+        const DATA_URL = "https://corsproxy.io/?https%3A%2F%2Fwww.gstatic.com%2Fgke-image-maps%2Fgke-to-cos.json";
+        
+        // Global variable to store the mapping data
+        let versionMapData = [];
+
+        // DOM Element References
+        const selectElement = document.getElementById('versionSelect');
+        const tableBody = document.getElementById('resultsTableBody');
+        const refreshButton = document.getElementById('refreshButton');
+        const statusMessage = document.getElementById('statusMessage');
+
+        /**
+         * Utility function to format and show status messages (errors or loading)
+         */
+        function showStatus(message, type = 'loading') {
+            statusMessage.textContent = message;
+            statusMessage.classList.remove('hidden', 'bg-red-100', 'text-red-700', 'bg-blue-100', 'text-blue-700');
+            
+            if (type === 'error') {
+                statusMessage.classList.add('bg-red-100', 'text-red-700');
+            } else { // 'loading'
+                statusMessage.classList.add('bg-blue-100', 'text-blue-700');
+            }
+        }
+
+        /**
+         * Utility function to hide the status message
+         */
+        function hideStatus() {
+            statusMessage.classList.add('hidden');
+        }
+
+        /**
+         * Creates a clickable release notes link from a COS image name.
+         * Example: cos-121-18867-199-52 -> https://cloud.google.com/container-optimized-os/docs/release-notes/m121#cos-121-18867-199-52_
+         */
+        function createCosLink(imageName) {
+            if (!imageName || !imageName.startsWith('cos-')) {
+                return document.createTextNode(imageName || 'N/A');
+            }
+            
+            const parts = imageName.split('-');
+            const milestone = parts[1] ? `m${parts[1]}` : 'milestone-not-found';
+            const anchor = `${imageName}_`; // Note the trailing underscore
+            
+            const link = document.createElement('a');
+            link.href = `https://cloud.google.com/container-optimized-os/docs/release-notes/${milestone}#${anchor}`;
+            link.textContent = imageName;
+            link.target = '_blank';
+            link.rel = 'noopener noreferrer';
+            link.className = 'text-blue-600 hover:text-blue-800 hover:underline'; // Added Google Blue styling
+            return link;
+        }
+
+        /**
+         * Populates the results table based on the selected value
+         */
+        function populateTable(selectedValue) {
+            // Clear previous results
+            tableBody.innerHTML = '';
+            
+            if (!selectedValue) {
+                tableBody.innerHTML = '<tr><td colspan="2" class="px-6 py-4 text-sm text-gray-500 text-center">Select a GKE version to see results.</td></tr>';
+                return;
+            }
+
+            let results = [];
+            
+            // Check if it's a wildcard search
+            if (selectedValue.endsWith('.x')) {
+                const minorVersion = selectedValue.slice(0, -2); // Get "1.30" from "1.30.x"
+                results = versionMapData.filter(entry => entry.gke_version.startsWith(minorVersion));
+            } else {
+                // Exact version search
+                results = versionMapData.filter(entry => entry.gke_version === selectedValue);
+            }
+
+            if (results.length === 0) {
+                tableBody.innerHTML = '<tr><td colspan="2" class="px-6 py-4 text-sm text-gray-500 text-center">No matches found.</td></tr>';
+                return;
+            }
+
+            // Populate table with new results
+            results.forEach(entry => {
+                const row = document.createElement('tr');
+                
+                const gkeCell = document.createElement('td');
+                gkeCell.className = 'px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900';
+                gkeCell.textContent = entry.gke_version;
+                
+                const cosCell = document.createElement('td');
+                cosCell.className = 'px-6 py-4 whitespace-nowrap text-sm text-gray-700';
+                cosCell.appendChild(createCosLink(entry.image));
+                
+                row.appendChild(gkeCell);
+                row.appendChild(cosCell);
+                tableBody.appendChild(row);
+            });
+        }
+
+        /**
+         * Populates the dropdown with unique GKE versions and minor wildcards
+         */
+        function populateDropdown() {
+            const versions = new Set();
+            const minorVersions = new Set();
+            
+            versionMapData.forEach(entry => {
+                versions.add(entry.gke_version);
+                // Extract minor version (e.g., "1.30" from "1.30.5-gke.100")
+                const minor = entry.gke_version.split('.').slice(0, 2).join('.');
+                if (/^\d+\.\d+$/.test(minor)) { // Ensure it's in X.Y format
+                    minorVersions.add(minor);
+                }
+            });
+
+            // Sort them
+            const sortedVersions = [...versions].sort().reverse();
+            const sortedMinors = [...minorVersions].sort().reverse();
+
+            // Clear loading text
+            selectElement.innerHTML = '';
+            
+            // Add default option
+            const defaultOption = document.createElement('option');
+            defaultOption.value = '';
+            defaultOption.textContent = 'Select a version...';
+            selectElement.appendChild(defaultOption);
+
+            // Create optgroup for Minor Versions (Wildcard)
+            const minorGroup = document.createElement('optgroup');
+            minorGroup.label = 'Minor Versions (Wildcard)';
+            sortedMinors.forEach(minor => {
+                const option = document.createElement('option');
+                option.value = `${minor}.x`;
+                option.textContent = `${minor}.x`;
+                minorGroup.appendChild(option);
+            });
+            selectElement.appendChild(minorGroup);
+
+            // Create optgroup for Full GKE Versions
+            const fullGroup = document.createElement('optgroup');
+            fullGroup.label = 'Full GKE Versions';
+            sortedVersions.forEach(version => {
+                const option = document.createElement('option');
+                option.value = version;
+                option.textContent = version;
+                fullGroup.appendChild(option);
+            });
+            selectElement.appendChild(fullGroup);
+        }
+
+        /**
+         * Main function to fetch, parse, and store the data
+         */
+        async function loadData() {
+            showStatus('Fetching latest version data...', 'loading');
+            refreshButton.disabled = true;
+            selectElement.disabled = true;
+            versionMapData = []; // Clear old data
+
+            try {
+                const response = await fetch(DATA_URL);
+                if (!response.ok) {
+                    throw new Error(`Failed to fetch: ${response.status} ${response.statusText}`);
+                }
+                
+                const jsonData = await response.json();
+
+                // *** CRITICAL STEP ***
+                // The data is an object with an "entries" key, which holds the array.
+                const entriesArray = jsonData.entries;
+
+                if (!Array.isArray(entriesArray)) {
+                     throw new Error('Data received from proxy was not in the expected array format.');
+                }
+                
+                versionMapData = entriesArray;
+                
+                // Once data is loaded, populate the UI
+                populateDropdown();
+                populateTable(null); // Reset table
+                hideStatus();
+
+            } catch (error) {
+                console.error('Failed to fetch data:', error);
+                showStatus(`Error: ${error.message}. Please try again.`, 'error');
+                tableBody.innerHTML = `<tr><td colspan="2" class="px-6 py-4 text-sm text-red-700 text-center">Failed to load data.</td></tr>`;
+            } finally {
+                // Re-enable controls regardless of success or failure
+                refreshButton.disabled = false;
+                selectElement.disabled = false;
+            }
+        }
+
+        // --- Event Listeners ---
+        
+        // Listen for changes on the dropdown to filter the table
+        selectElement.addEventListener('change', (e) => {
+            populateTable(e.target.value);
+        });
+
+        // Listen for clicks on the refresh button
+        refreshButton.addEventListener('click', loadData);
+
+        // Load the data when the page first loads
+        document.addEventListener('DOMContentLoaded', loadData);
+    </script>
+</body>
+</html>
